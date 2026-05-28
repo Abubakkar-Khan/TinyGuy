@@ -42,6 +42,7 @@
   var keys = { w: false, a: false, s: false, d: false };
 
   var particles = [];
+  var XP_DIST_THRESHOLD = 100;
   var xp            = 0;
   var level         = 1;
   var steps         = 0;
@@ -121,9 +122,10 @@
     }
     
     distAccum += dist;
-    while (distAccum >= 500) {
-      distAccum -= 500;
-      xp += XP_PER_500PX;
+    while (distAccum >= XP_DIST_THRESHOLD) {
+      distAccum -= XP_DIST_THRESHOLD;
+      xp += 1;
+      statsDirty = true;
       var needed = xpToNextLevel();
       if (xp >= needed) {
         xp = 0;
