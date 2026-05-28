@@ -320,7 +320,14 @@
     const key = e.key.toLowerCase();
     if (keys.hasOwnProperty(key)) {
       keys[key] = true;
-      if (key === 'k') e.preventDefault();
+      if (key === 'k') {
+        e.preventDefault();
+        var now = Date.now();
+        if (now - lastClickTime > 500) { // 500ms strict cooldown between clicks
+          lastClickTime = now;
+          simulateClick(posX, posY, 'left');
+        }
+      }
     }
   }
 
@@ -433,15 +440,6 @@
     var halfH = charH / 2;
     posX = clamp(posX, halfW, canvas.width  - halfW);
     posY = clamp(posY, halfH, canvas.height - halfH);
-
-    // Continuous clicking
-    if (cfg.keyboardControl && keys['k']) {
-      var now = Date.now();
-      if (now - lastClickTime > 200) { // 200ms cooldown
-        lastClickTime = now;
-        simulateClick(posX, posY, 'left');
-      }
-    }
 
     if (moving) {
       if (Math.abs(dx) > Math.abs(dy)) {
