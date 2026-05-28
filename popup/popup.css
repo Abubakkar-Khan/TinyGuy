@@ -29,7 +29,7 @@ body {
 .gb-case {
   background: var(--gb-case); /* Actual Gameboy shell color */
   padding: 12px;
-  border-radius: 8px 8px 36px 8px; /* Iconic Gameboy bottom-right curve on the outer case */
+  border-radius: 12px; /* Uniformly rounded on all corners */
 }
 
 /* ── Screen Area ── */
