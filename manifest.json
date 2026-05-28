@@ -1,0 +1,58 @@
+{
+  "manifest_version": 3,
+  "name": "Tiny Guy",
+  "version": "2.0.0",
+  "description": "A tiny pixel companion that follows your cursor — earn XP, level up, and watch your little buddy come alive!",
+
+  "permissions": ["storage", "activeTab"],
+
+  "commands": {
+    "toggle-character": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+H",
+        "mac": "Command+Shift+H"
+      },
+      "description": "Toggle Tiny Guy on/off"
+    }
+  },
+
+  "host_permissions": ["http://*/*", "https://*/*"],
+
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16":  "icons/icon16.png",
+      "32":  "icons/icon32.png",
+      "48":  "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "Tiny Guy"
+  },
+
+  "icons": {
+    "16":  "icons/icon16.png",
+    "32":  "icons/icon32.png",
+    "48":  "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "web_accessible_resources": [
+    {
+      "resources": ["assets/char.png"],
+      "matches": ["http://*/*", "https://*/*"]
+    }
+  ]
+}

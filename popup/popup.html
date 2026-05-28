@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tiny Guy Settings</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="gb-case">
+    <!-- Screen Area -->
+    <div class="gb-screen-bezel">
+      <div class="gb-screen">
+        <header>
+          <div class="header-left">
+            <canvas id="preview" width="32" height="32"></canvas>
+            <h1 class="title">TINY GUY</h1>
+          </div>
+          <div class="power-led-container">
+            <span class="power-label">BATTERY</span>
+            <div class="power-led" id="power-led"></div>
+          </div>
+        </header>
+
+        <section class="stats-panel" id="stats-panel">
+          <div class="stat-card">
+            <div class="stat-value" id="level-display">1</div>
+            <div class="stat-label">LVL</div>
+          </div>
+          <div class="stat-card flex-grow">
+            <div class="xp-header">
+              <span class="xp-label">XP</span>
+              <span class="xp-text" id="xp-text">0 / 50</span>
+            </div>
+            <div class="xp-bar-container">
+              <div class="xp-bar" id="xp-bar" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="steps-display">0</div>
+            <div class="stat-label">STEPS</div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Controls Area -->
+    <div class="power-section">
+      <!-- Power Switch -->
+      <div class="control-row">
+        <label class="bold-label">POWER (ENABLE)</label>
+        <label class="switch red-switch">
+          <input type="checkbox" id="enabled">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="divider"></div>
+    </div>
+
+    <main id="main">
+      <div class="settings-group">
+
+        <div class="control">
+          <div class="control-header">
+            <label>Scale</label>
+            <span id="scale-out" class="value">5%</span>
+          </div>
+          <input type="range" id="scale" min="1" max="25" step="1">
+        </div>
+
+        <div class="control">
+          <div class="control-header">
+            <label>Speed</label>
+            <span id="speed-out" class="value">3</span>
+          </div>
+          <input type="range" id="speed" min="1" max="10" step="1">
+        </div>
+
+        <div class="control">
+          <div class="control-header">
+            <label>Anim Speed</label>
+            <span id="animSpeed-out" class="value">7</span>
+          </div>
+          <input type="range" id="animSpeed" min="1" max="15" step="1">
+        </div>
+      </div>
+
+      <div class="settings-group toggles-group">
+        <div class="control-row">
+          <label>Drop Shadow</label>
+          <label class="switch">
+            <input type="checkbox" id="shadow">
+            <span class="slider"></span>
+          </label>
+        </div>
+        
+        <div class="control-row">
+          <div class="toggle-label-group">
+            <label>Keyboard Control</label>
+            <span class="sub-label">WASD to move, K to click</span>
+          </div>
+          <label class="switch">
+            <input type="checkbox" id="keyboardControl">
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+      
+      <!-- Decorative speaker vents -->
+      <div class="speaker-vents">
+        <div class="vent"></div>
+        <div class="vent"></div>
+        <div class="vent"></div>
+        <div class="vent"></div>
+      </div>
+    </main>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
