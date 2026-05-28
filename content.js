@@ -65,17 +65,18 @@
     keyboardControl: false
   };
 
-  chrome.storage.sync.get(null, function (stored) {
+  chrome.storage.local.get(null, function (stored) {
     applyConfig(stored || {});
     loadStats(stored || {});
     if (cfg.enabled) start();
   });
 
   chrome.storage.onChanged.addListener(function (changes, area) {
-    if (area !== 'sync') return;
+    if (area !== 'local') return;
     var patch = {};
     for (var k in changes) patch[k] = changes[k].newValue;
     applyConfig(patch);
+    loadStats(patch); // Update stats from other tabs
     if (cfg.enabled && !alive) start();
     else if (!cfg.enabled && alive) stop();
   });
@@ -101,7 +102,7 @@
     if (now - lastSaveTime < SAVE_INTERVAL) return;
     lastSaveTime = now;
     statsDirty   = false;
-    chrome.storage.sync.set({ xp: xp, level: level, steps: steps });
+    chrome.storage.local.set({ xp: xp, level: level, steps: steps });
   }
 
   function clamp(v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; }
@@ -283,7 +284,7 @@
     document.removeEventListener('visibilitychange', onVisibilityChange);
 
     if (statsDirty) {
-      chrome.storage.sync.set({ xp: xp, level: level, steps: steps });
+      chrome.storage.local.set({ xp: xp, level: level, steps: steps });
       statsDirty = false;
     }
   }

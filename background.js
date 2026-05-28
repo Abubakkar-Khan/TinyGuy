@@ -14,7 +14,7 @@ const DEFAULTS = {
 
 /* Write any missing keys on install OR update */
 chrome.runtime.onInstalled.addListener(function (details) {
-  chrome.storage.sync.get(null, function (stored) {
+  chrome.storage.local.get(null, function (stored) {
     var patch = {};
 
     // Always write missing keys
@@ -27,7 +27,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
     }
 
     if (Object.keys(patch).length > 0) {
-      chrome.storage.sync.set(patch, function() {
+      chrome.storage.local.set(patch, function() {
         console.log('[TinyGuy] Settings initialized:', patch);
       });
     }
@@ -37,9 +37,9 @@ chrome.runtime.onInstalled.addListener(function (details) {
 /* Keyboard shortcut: Ctrl+Shift+H to toggle */
 chrome.commands.onCommand.addListener(function (command) {
   if (command === 'toggle-character') {
-    chrome.storage.sync.get(['enabled'], function (data) {
+    chrome.storage.local.get(['enabled'], function (data) {
       var newState = !data.enabled;
-      chrome.storage.sync.set({ enabled: newState }, function() {
+      chrome.storage.local.set({ enabled: newState }, function() {
         console.log('[TinyGuy] Toggled via keyboard:', newState ? 'ON' : 'OFF');
       });
     });

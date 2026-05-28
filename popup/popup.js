@@ -139,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function save(key, value) {
-    chrome.storage.sync.set({ [key]: value }, () => {
+    chrome.storage.local.set({ [key]: value }, () => {
       if (chrome.runtime.lastError) {
         console.error(LOG, 'Save error:', chrome.runtime.lastError.message);
       }
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ── Load settings ─────────────────────────────── */
-  chrome.storage.sync.get(DEFAULTS, (s) => {
+  chrome.storage.local.get(DEFAULTS, (s) => {
     el.enabled.checked     = s.enabled;
     el.scale.value         = s.scale;
     el.speed.value         = s.speed;
@@ -195,10 +195,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ── Real-time storage listener ────────────────── */
   chrome.storage.onChanged.addListener((changes, area) => {
-    if (area !== 'sync') return;
+    if (area !== 'local') return;
 
     if (changes.xp || changes.level || changes.steps) {
-      chrome.storage.sync.get(['xp', 'level', 'steps'], (s) => {
+      chrome.storage.local.get(['xp', 'level', 'steps'], (s) => {
         updateStats(s.xp, s.level, s.steps);
       });
     }

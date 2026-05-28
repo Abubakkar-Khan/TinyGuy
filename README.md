@@ -1,68 +1,79 @@
-# 🎮 Tiny Guy
+# Tiny Guy
 
 **A tiny pixel companion that follows your cursor — earn XP, level up, and watch your little buddy come alive!**
 
-A Chrome extension that places a cute, tiny pixel-art character on every webpage. He follows your cursor, leaves colorful pixel dust trails, earns XP as you browse, and celebrates every level-up with a burst of particles.
+Tiny Guy places a cute, tiny pixel-art character on every webpage. He follows your cursor, leaves colorful pixel dust trails, earns XP as you browse, and celebrates every level-up with a burst of particles. 
 
-## ✨ Features
+## Features
 
-- 🕹️ **Tiny pixel character** follows your cursor across every webpage
-- ⚡ **XP & Level system** — earn XP by moving, level up and unlock celebrations
-- 👟 **Step counter** — tracks total pixels traveled
-- 🌟 **Pixel dust trail** — colorful square particles in neon green, blue, pink, and gold
-- 🎉 **Level-up celebrations** — particle burst + floating "LVL UP!" text
-- 🏃 **Idle bounce** — character does a little hop when idle for ~5 seconds
-- 🎨 **Retro pixel-art popup** — CRT scanlines, Press Start 2P font, neon glow effects
-- ⚙️ **Customizable** — adjust size, speed, animation speed, shadow, and fade behavior
-- ⌨️ **Keyboard shortcut** — `Ctrl+Shift+H` to toggle on/off
-- 🔄 **Real-time sync** — settings sync across all tabs
+- **Cursor Companion**: A tiny pixel character follows your cursor across every webpage.
+- **Leveling System**: Earn XP by moving. Level up and unlock celebrations!
+- **Step Counter**: Tracks total pixels traveled across all tabs.
+- **Pixel Dust Trail**: Colorful square particles in retro colors trail behind you.
+- **Idle Bounce**: Character does a little hop when idle for 5 seconds.
+- **Gameboy Style Control Panel**: A beautifully styled retro Gameboy popup menu to manage your companion.
+- **Keyboard Control (WASD)**: Toggle keyboard mode to drive him around with W, A, S, D and click on elements with K.
 
-## 📦 Installation
+## Game Engine Architecture
 
-1. Clone or download this repository
+```mermaid
+graph TD
+    A[Background Script] -->|Manages global state| B(Chrome Storage Local)
+    C[Popup UI] <-->|Reads/Writes settings| B
+    D[Content Script] <-->|Reads config & Syncs XP/Levels| B
+    
+    subgraph Browser Tab
+        D --> E{Input Controller}
+        E -->|Mouse| F[Follow Cursor]
+        E -->|WASD| G[Keyboard Drive]
+        F --> H[Physics & Movement Engine]
+        G --> H
+        H --> I[Canvas Renderer]
+        H --> J[Particle System]
+        H --> K[XP Accumulator]
+    end
+```
+
+## How XP Works
+
+The Tiny Guy game engine runs constantly as you browse, converting your physical mouse movements into game progression.
+
+```mermaid
+flowchart LR
+    M[Mouse Moves] -->|Calculates distance| D(Distance Accumulator)
+    D -->|> 500px| X[+1 XP]
+    X --> L{Check Level}
+    L -->|XP >= Level * 50| U[Level Up Celebration]
+    L -->|Otherwise| C[Continue]
+```
+
+## Installation
+
+1. Clone or download this repository.
 2. Open Chrome and navigate to `chrome://extensions/`
-3. Enable **Developer mode** (top right toggle)
-4. Click **Load unpacked** and select the project folder
+3. Enable **Developer mode** (top right toggle).
+4. Click **Load unpacked** and select the project folder.
 5. Click the extension icon to open the retro control panel!
 
-## 🎮 Controls
+## Controls & Configuration
 
 | Setting | Description |
 |---------|------------|
-| **SIZE** | Character scale (10-100%) |
-| **SPEED** | Movement speed (1-10) |
-| **ANIM** | Animation frame rate (1-15) |
-| **SHADOW** | Toggle drop shadow |
-| **FADE OUT** | Fade when cursor leaves window |
+| **Power** | Turn the extension on or off entirely. |
+| **Scale** | Adjust the character's size (1% to 25%). |
+| **Speed** | Adjust how fast he follows you. |
+| **Anim Speed** | Control the sprite animation framerate. |
+| **Drop Shadow** | Toggle the retro drop shadow effect. |
+| **Keyboard Control**| Turn off mouse follow to drive him with WASD. Press K to click! |
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-- Pure vanilla JavaScript (no frameworks)
+- Pure vanilla JavaScript
 - Chrome Extension Manifest V3
-- HTML5 Canvas for rendering
-- CSS3 with pixel-art styling & CRT effects
-- Google Fonts (Press Start 2P)
+- HTML5 Canvas for high-performance rendering
+- CSS3 with retro Gameboy aesthetic
+- Google Fonts (Orbitron)
 
-## 📁 Project Structure
+## License
 
-```
-TinyGuy/
-├── manifest.json          # Extension manifest (MV3)
-├── background.js          # Service worker (defaults, keyboard shortcut)
-├── content.js             # Game engine (character, particles, XP system)
-├── popup/
-│   ├── popup.html         # Retro game menu structure
-│   ├── popup.css          # Pixel-art CRT styling
-│   └── popup.js           # Controls, stats display, sprite preview
-├── assets/
-│   └── char.png           # Sprite sheet (4×4 grid)
-└── icons/
-    ├── icon16.png
-    ├── icon32.png
-    ├── icon48.png
-    └── icon128.png
-```
-
-## 📜 License
-
-MIT License — see [LICENSE](LICENSE) for details.
+MIT License — see LICENSE for details.
