@@ -393,6 +393,13 @@
         posY += (ky / len) * step;
         targetX = posX; // Keep synced
         targetY = posY;
+        
+        // Edge scrolling
+        var margin = 40;
+        if (ky > 0 && posY > canvas.height - margin) window.scrollBy(0, step * 1.5);
+        if (ky < 0 && posY < margin) window.scrollBy(0, -step * 1.5);
+        if (kx > 0 && posX > canvas.width - margin) window.scrollBy(step * 1.5, 0);
+        if (kx < 0 && posX < margin) window.scrollBy(-step * 1.5, 0);
       } else {
         // Explicitly clear targets if not holding keys so no drifting occurs
         targetX = posX;
