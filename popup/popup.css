@@ -19,7 +19,7 @@
 
 body {
   width: 320px;
-  background: var(--gb-case);
+  background: #181a1f; /* Dark background so the Gameboy case stands out */
   color: var(--gb-text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   font-size: 13px;
@@ -27,6 +27,7 @@ body {
 }
 
 .gb-case {
+  background: var(--gb-case); /* Actual Gameboy shell color */
   padding: 12px;
   border-radius: 8px 8px 36px 8px; /* Iconic Gameboy bottom-right curve on the outer case */
 }
