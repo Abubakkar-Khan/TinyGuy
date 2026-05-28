@@ -38,8 +38,8 @@
   var idleTick = 0;
   var tabVisible = true;
 
-  // Keyboard state
-  var keys = { w: false, a: false, s: false, d: false };
+  var raf           = null;
+  var keys = { w: false, a: false, s: false, d: false, k: false };
 
   var particles = [];
   var XP_DIST_THRESHOLD = 100;
@@ -49,6 +49,7 @@
   var stepAccum     = 0;
   var distAccum     = 0;
   var lastSaveTime  = 0;
+  var lastClickTime = 0;
   var statsDirty    = false;
 
   var bouncing       = false;
@@ -258,7 +259,7 @@
     bouncing = false; bounceFrame = 0; bounceOffsetY = 0;
     particles = []; levelUpText = null;
     lastSaveTime = Date.now();
-    keys = { w: false, a: false, s: false, d: false };
+    keys = { w: false, a: false, s: false, d: false, k: false };
 
     loadSprite();
 
@@ -319,10 +320,7 @@
     const key = e.key.toLowerCase();
     if (keys.hasOwnProperty(key)) {
       keys[key] = true;
-    }
-    if (key === 'k') {
-      e.preventDefault(); // prevent potential default
-      simulateClick(posX, posY, 'left');
+      if (key === 'k') e.preventDefault();
     }
   }
 
@@ -395,11 +393,11 @@
         targetY = posY;
         
         // Edge scrolling
-        var margin = 40;
-        if (ky > 0 && posY > canvas.height - margin) window.scrollBy(0, step * 1.5);
-        if (ky < 0 && posY < margin) window.scrollBy(0, -step * 1.5);
-        if (kx > 0 && posX > canvas.width - margin) window.scrollBy(step * 1.5, 0);
-        if (kx < 0 && posX < margin) window.scrollBy(-step * 1.5, 0);
+        var margin = 120;
+        if (ky > 0 && posY > canvas.height - margin) window.scrollBy({top: step * 2, left: 0, behavior: 'instant'});
+        if (ky < 0 && posY < margin) window.scrollBy({top: -step * 2, left: 0, behavior: 'instant'});
+        if (kx > 0 && posX > canvas.width - margin) window.scrollBy({top: 0, left: step * 2, behavior: 'instant'});
+        if (kx < 0 && posX < margin) window.scrollBy({top: 0, left: -step * 2, behavior: 'instant'});
       } else {
         // Explicitly clear targets if not holding keys so no drifting occurs
         targetX = posX;
@@ -435,6 +433,15 @@
     var halfH = charH / 2;
     posX = clamp(posX, halfW, canvas.width  - halfW);
     posY = clamp(posY, halfH, canvas.height - halfH);
+
+    // Continuous clicking
+    if (cfg.keyboardControl && keys['k']) {
+      var now = Date.now();
+      if (now - lastClickTime > 200) { // 200ms cooldown
+        lastClickTime = now;
+        simulateClick(posX, posY, 'left');
+      }
+    }
 
     if (moving) {
       if (Math.abs(dx) > Math.abs(dy)) {
