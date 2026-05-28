@@ -28,7 +28,7 @@ body {
 
 .gb-case {
   padding: 12px;
-  border-radius: 8px;
+  border-radius: 8px 8px 36px 8px; /* Iconic Gameboy bottom-right curve on the outer case */
 }
 
 /* ── Screen Area ── */
